@@ -1,33 +1,31 @@
+fn parse_input(input: &str) -> Vec<u32> {
+    input
+        .split_terminator("\n\n")
+        .map(|elf| {
+            elf.split_terminator('\n')
+                .map(|cal| cal.parse::<u32>().expect("valid input"))
+        })
+        .map(|elf| elf.sum::<u32>())
+        .collect()
+}
+
 pub fn part_one(input: &str) -> Option<u32> {
-    let parsed = input.split_terminator("\n\n").map(|elf| {
-        elf.split_terminator('\n')
-            .map(|cal| cal.parse::<u32>().expect("valid input"))
-    });
-
-    let total = parsed.map(|elf| elf.sum::<u32>());
-
-    let max_elf_cal = total.max();
-
-    max_elf_cal
+    parse_input(input).into_iter().max()
 }
 
 pub fn part_two(input: &str) -> Option<u32> {
-    let parsed = input.split_terminator("\n\n").map(|elf| {
-        elf.split_terminator('\n')
-            .map(|cal| cal.parse::<u32>().expect("valid input"))
-    });
-
-    let total = parsed.map(|elf| elf.sum::<u32>());
+    let total = parse_input(input);
 
     const TOP_N: usize = 3;
     let mut top = [0u32; TOP_N];
-    total.for_each(|elf| {
+
+    total.into_iter().for_each(|elf| {
         let change_idx =
             top.iter_mut()
                 .enumerate()
                 .find_map(|(top_i, top_v)| if elf > *top_v { Some(top_i) } else { None });
+
         if let Some(change_idx) = change_idx {
-            //dbg!(change_idx, top, elf);
             for i in change_idx + 1..TOP_N {
                 top[TOP_N - i] = top[TOP_N - i - 1];
             }
