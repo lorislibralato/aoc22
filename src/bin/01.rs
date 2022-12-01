@@ -27,7 +27,7 @@ pub fn part_two(input: &str) -> Option<u32> {
                 .enumerate()
                 .find_map(|(top_i, top_v)| if elf > *top_v { Some(top_i) } else { None });
         if let Some(change_idx) = change_idx {
-            dbg!(change_idx, top, elf);
+            //dbg!(change_idx, top, elf);
             for i in change_idx + 1..TOP_N {
                 top[TOP_N - i] = top[TOP_N - i - 1];
             }
